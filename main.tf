@@ -24,30 +24,7 @@ resource "civo_kubernetes_cluster" "this" {
   depends_on   = [civo_firewall.this, civo_network.this]
 }
 
-data "civo_loadbalancer" "traefik" {
-  name   = "netauto-ng-dev-cluster-kube-system-traefik"
-  region = local.region
-}
-
-resource "civo_dns_domain_name" "this" {
-  name = "netauto-ng-dev.org"
-}
-
-resource "civo_dns_domain_record" "this" {
-  domain_id  = civo_dns_domain_name.this.id
-  type       = "A"
-  name       = "www"
-  value      = data.civo_loadbalancer.traefik.public_ip
-  ttl        = 600
-  depends_on = [civo_dns_domain_name.this, data.civo_loadbalancer.traefik]
-}
-
 resource "local_file" "kubeconfig" {
   filename = "/tmp/${civo_kubernetes_cluster.this.name}-kubeconfig"
   content  = civo_kubernetes_cluster.this.kubeconfig
-}
-
-module "certificates" {
-  source = "./modules/certificates"
-  domain = civo_dns_domain_name.this.id
 }
