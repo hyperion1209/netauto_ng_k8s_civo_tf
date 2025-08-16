@@ -12,20 +12,21 @@ terraform {
       source  = "civo/civo"
       version = "1.1.5"
     }
-
     tls = {
       source  = "hashicorp/tls"
       version = "~> 4.0.5"
     }
-
     cloudinit = {
       source  = "hashicorp/cloudinit"
       version = "~> 2.3.4"
     }
-
     local = {
       source  = "hashicorp/local"
       version = "~> 2.5"
+    }
+    time = {
+      source = "hashicorp/time"
+      version = "0.13.1"
     }
   }
   required_version = "~> 1.3"

@@ -24,10 +24,16 @@ resource "civo_kubernetes_cluster" "this" {
   depends_on   = [civo_firewall.this, civo_network.this]
 }
 
+resource "time_sleep" "this" {
+  depends_on = [ civo_kubernetes_cluster.this ]
+
+  create_duration = "30s"
+}
+
 data "civo_loadbalancer" "traefik" {
   name   = "${civo_kubernetes_cluster.this.name}-kube-system-traefik"
   region = local.region
-  depends_on = [ civo_kubernetes_cluster.this ]
+  depends_on = [ time_sleep.this ]
 }
 
 resource "local_file" "kubeconfig" {
