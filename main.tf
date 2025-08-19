@@ -27,7 +27,7 @@ resource "civo_kubernetes_cluster" "this" {
 resource "time_sleep" "this" {
   depends_on = [ civo_kubernetes_cluster.this ]
 
-  create_duration = "30s"
+  create_duration = "90s"
 }
 
 data "civo_loadbalancer" "traefik" {
